@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bike Time Pro</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Bike Time Pro</h1>
+    <div id="timer" class="timer">00:00</div>
+    <div class="controls">
+      <button onclick="startTimer(20)">Mulai 20 menit</button>
+      <button onclick="startTimer(30)">Mulai 30 menit</button>
+      <button onclick="stopTimer()">Stop</button>
+    </div>
+    <p class="note">Versi desktop. Jadi .exe lewat Electron.</p>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; background: #f3f6fb; color:#0b1724; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+.container { background: white; padding:24px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.08); width:320px; text-align:center; }
+.timer { font-size:48px; font-weight:700; margin:12px 0; }
+.controls button { margin:6px; padding:8px 12px; border-radius:8px; }
+.note { font-size:12px; color:#6b7280; margin-top:10px; }
