@@ -1,0 +1,36 @@
+name: Build Bike Time Pro EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1️⃣ Ambil source code dari repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Pasang Node.js versi 20
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Install semua dependensi dari package.json
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Jalankan proses build .exe lewat electron-builder
+      - name: Build EXE
+        run: npm run electron:build
+
+      # 5️⃣ Upload hasil build (installer .exe) agar bisa diunduh dari tab "Artifacts"
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BikeTimePro-EXE
+          path: dist\\**\\*.exe
