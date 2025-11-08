@@ -1,0 +1,62 @@
+name: Build & Release Bike Time Pro EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1️⃣ Checkout kode dari repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Node.js versi 20
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Install dependensi
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Build aplikasi Electron menjadi .exe
+      - name: Build EXE
+        run: npm run electron:build
+
+      # 5️⃣ Upload hasil build agar bisa diunduh sebagai artifact
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BikeTimePro-EXE
+          path: dist\\**\\*.exe
+
+      # 6️⃣ Ambil nomor versi dari package.json
+      - name: Get version
+        id: get_version
+        run: |
+          $content = Get-Content package.json -Raw | ConvertFrom-Json
+          echo "version=v$content.version" >> $env:GITHUB_OUTPUT
+
+      # 7️⃣ Buat release otomatis di GitHub dengan file .exe
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          name: "Bike Time Pro v${{ steps.get_version.outputs.version }}"
+          body: |
+            🚴 **Bike Time Pro Desktop**
+            Versi: v${{ steps.get_version.outputs.version }}
+            Dibuat otomatis dari branch `main`.
+
+            💻 Klik file .exe di bawah untuk mengunduh aplikasi.
+          files: dist/**/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
